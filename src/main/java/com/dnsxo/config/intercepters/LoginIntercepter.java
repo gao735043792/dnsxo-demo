@@ -24,8 +24,8 @@ public class LoginIntercepter implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.info("request请求地址path[{}] uri[{}]", request.getServletPath(), request.getRequestURI());
         //从请求头中获取用户token（登陆凭证根据业务而定）
-        Long userId = getUserId(request.getHeader("H-User-Token"));
-        if (userId != null && checkAuth(userId, request.getRequestURI())) {
+        Long userId = this.getUserId(request.getHeader("H-User-Token"));
+        if (userId != null && this.checkAuth(userId, request.getRequestURI())) {
             return true;
         }
         return false;
@@ -46,7 +46,7 @@ public class LoginIntercepter implements HandlerInterceptor {
      * @date 2019/11/29 13:14
      */
     private Long getUserId(String userToken) {
-        Long userId = null;
+        Long userId = 1L;
         return userId;
     }
 

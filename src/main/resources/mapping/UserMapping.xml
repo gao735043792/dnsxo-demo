@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dnsxo.mapper.user.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.dnsxo.bean.user.UserBean">
+        <result column="fpkid" jdbcType="BIGINT" property="pkid" />
+        <result column="fid" jdbcType="VARCHAR" property="id" />
+        <result column="fname" jdbcType="VARCHAR" property="name" />
+        <result column="fpassword" jdbcType="VARCHAR" property="password" />
+        <result column="fphone" jdbcType="VARCHAR" property="phone" />
+    </resultMap>
+
+    <select id="queryuserbyid" resultMap="BaseResultMap" >
+        select * from t_dns_user where fid = #{id}
+    </select>
+
+</mapper>

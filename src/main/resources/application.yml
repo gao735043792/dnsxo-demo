@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev
+#    active: test
+#    active: prod
+
+mybatis:
+  mapperLocations: classpath:mapping/*Mapping.xml
+  config-location: classpath:mybatis-config.xml
+  typeAliasesPackage: com.dnsxo.bean
