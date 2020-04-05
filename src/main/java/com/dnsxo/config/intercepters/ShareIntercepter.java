@@ -1,9 +1,13 @@
 package com.dnsxo.config.intercepters;
 
+import com.dnsxo.bean.constant.CacheKeyConst;
+import com.dnsxo.util.comm.CookiesUtil;
+import com.dnsxo.util.comm.MyStringUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ShareIntercepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //植入cookies
+        CookiesUtil.plant(request, response);
         return true;
     }
 

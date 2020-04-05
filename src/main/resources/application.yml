@@ -1,6 +1,12 @@
 spring:
   profiles:
     active: dev
+
+#静态资源配置
+  resources:
+    static-locations: classpath:/bootstrap
+  mvc:
+    static-path-pattern: /resources/**
 #    active: test
 #    active: prod
 
