@@ -23,6 +23,7 @@ public class CookiesUtil {
 					if(cookie.getValue() == null){
 						sessionid = MyStringUtil.uuid();
 						cookie = new Cookie(CacheKeyConst.COOKIEID_KEY, MyStringUtil.uuid());
+						cookie.setPath("/");
 						response.addCookie(cookie);
 					}else{
 						sessionid = cookie.getValue();
@@ -33,6 +34,7 @@ public class CookiesUtil {
 		}
 		if(sessionid == null){
 			Cookie cookie = new Cookie(CacheKeyConst.COOKIEID_KEY, MyStringUtil.uuid());
+			cookie.setPath("/");
 			response.addCookie(cookie);
 		}
 	}

@@ -2,10 +2,17 @@ package com.dnsxo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dnsxo.bean.constant.CacheKeyConst;
+import com.dnsxo.bean.constant.MD5Const;
 import com.dnsxo.bean.constant.ReturnDataKeyConst;
+import com.dnsxo.bean.manage.user.UserBean;
+import com.dnsxo.config.intercepters.ManageLoginIntercepter;
+import com.dnsxo.service.manage.user.UserService;
 import com.dnsxo.util.comm.CookiesUtil;
 import com.dnsxo.util.comm.GraphicVerifyCode;
+import com.dnsxo.util.comm.MD5Util;
 import com.dnsxo.util.redis.RedisUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,8 +36,12 @@ import java.io.IOException;
 @RequestMapping("/share")
 public class LoginController {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private UserService userService;
 
     /**
      * @description 跳转管理端登录首页
@@ -78,7 +89,7 @@ public class LoginController {
     public String manageLogin(@NotNull(message = "用户名不能为空")String username,
                               @NotNull(message = "密码不能为空")String password,
                               @NotNull(message = "验证码不能为空")String verifycode,
-                              HttpServletRequest request){
+                              HttpServletRequest request) throws Exception {
         JSONObject data = new JSONObject();
         //1、校验图形验证码
         //2、清除缓存图形验证码s
@@ -90,11 +101,25 @@ public class LoginController {
             data.put(ReturnDataKeyConst.MSG_KEY, "验证码不正确");
             return data.toJSONString();
         }
+        UserBean user = userService.queryUserByPhone(username);
+        if(user == null){
+            data.put(ReturnDataKeyConst.STATUS_KEY, ReturnDataKeyConst.STATUS_FAIL_KEY);
+            data.put(ReturnDataKeyConst.MSG_KEY,"用户不存在");
+            return data.toJSONString();
+        }
+        //3、验证用户名与密码
+        String pwd = user.getPwd();
+        boolean flag = MD5Util.verifyMD5(password, MD5Const.MD5_SALT_VALUE, pwd);
+        if(!flag){
+            data.put(ReturnDataKeyConst.STATUS_KEY, ReturnDataKeyConst.STATUS_FAIL_KEY);
+            data.put(ReturnDataKeyConst.MSG_KEY,"密码不正确");
+            return data.toJSONString();
+        }
+        //4、用户登录状态放入缓存
+        redisUtil.set(CacheKeyConst.MANAGE_USER_KEY + CookiesUtil.getCookie(CacheKeyConst.COOKIEID_KEY, request.getCookies()),user, CacheKeyConst.CACHE_EXPIRE_TIME);
+        //5、返回登录状态
         data.put(ReturnDataKeyConst.STATUS_KEY, ReturnDataKeyConst.STATUS_SUCCESS_KEY);
         data.put(ReturnDataKeyConst.MSG_KEY,"登录成功");
-        //3、验证用户名与密码
-        //4、用户登录状态放入缓存
-        //5、返回登录状态
         return data.toJSONString();
     }
 

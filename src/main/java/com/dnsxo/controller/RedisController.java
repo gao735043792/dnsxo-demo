@@ -1,12 +1,10 @@
 package com.dnsxo.controller;
 
-import com.dnsxo.bean.user.UserBean;
 import com.dnsxo.util.redis.RedisUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.UUID;
 
 /**

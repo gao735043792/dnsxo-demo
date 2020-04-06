@@ -11,8 +11,6 @@ spring:
   thymeleaf:
     encoding: UTF-8
 
-
-
   #redis配置
   redis:
     # Redis数据库索引（默认为0）

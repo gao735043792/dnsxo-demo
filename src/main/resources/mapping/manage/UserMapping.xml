@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dnsxo.mapper.user.UserMapper">
+<mapper namespace="com.dnsxo.mapper.manage.user.UserMapper">
 
-    <resultMap id="BaseResultMap" type="com.dnsxo.bean.user.UserBean">
+    <resultMap id="BaseResultMap" type="com.dnsxo.bean.manage.user.UserBean">
         <result column="fpkid" jdbcType="BIGINT" property="pkid" />
         <result column="fid" jdbcType="VARCHAR" property="id" />
         <result column="fname" jdbcType="VARCHAR" property="name" />
         <result column="fpassword" jdbcType="VARCHAR" property="password" />
+        <result column="fpwd" jdbcType="VARCHAR" property="pwd" />
         <result column="fphone" jdbcType="VARCHAR" property="phone" />
     </resultMap>
 
-    <select id="queryuserbyid" resultMap="BaseResultMap" >
-        select * from t_dns_user where fid = #{id}
+    <select id="queryUserByPhone" resultMap="BaseResultMap" >
+        select * from t_dnsxo_manageuser where fphone = #{phone}
     </select>
 
 </mapper>
